@@ -1,0 +1,24 @@
+department,category,quarter,allocated_budget,spent_amount,remaining_budget,currency,manager_name
+Engineering,Cloud Infrastructure,Q1-2026,120000,114200,5800,USD,Sarah Jenkins
+Engineering,Cloud Infrastructure,Q2-2026,120000,118500,1500,USD,Sarah Jenkins
+Engineering,Cloud Infrastructure,Q3-2026,135000,98400,36600,USD,Sarah Jenkins
+Engineering,Software,Q3-2026,50000,38200,11800,USD,Sarah Jenkins
+Engineering,Hardware,Q3-2026,40000,29500,10500,USD,Sarah Jenkins
+Engineering,Travel,Q3-2026,25000,18400,6600,USD,Sarah Jenkins
+Engineering,Training,Q3-2026,15000,9200,5800,USD,Sarah Jenkins
+Sales,Travel,Q1-2026,40000,38500,1500,USD,Marcus Vance
+Sales,Travel,Q2-2026,42000,41000,1000,USD,Marcus Vance
+Sales,Travel,Q3-2026,45000,30750,14250,USD,Marcus Vance
+Sales,Events,Q3-2026,60000,48000,12000,USD,Marcus Vance
+Sales,Software,Q3-2026,30000,27500,2500,USD,Marcus Vance
+Marketing,Events,Q3-2026,80000,62000,18000,USD,Elena Rostova
+Marketing,Software,Q3-2026,35000,29000,6000,USD,Elena Rostova
+Marketing,Travel,Q3-2026,20000,14500,5500,USD,Elena Rostova
+IT,Hardware,Q3-2026,75000,58000,17000,USD,David Miller
+IT,Software,Q3-2026,90000,81500,8500,USD,David Miller
+IT,Training,Q3-2026,12000,7500,4500,USD,David Miller
+HR,Training,Q3-2026,25000,16500,8500,USD,Rachel Green
+HR,Events,Q3-2026,30000,21000,9000,USD,Rachel Green
+HR,Software,Q3-2026,22000,18000,4000,USD,Rachel Green
+Executive,Travel,Q3-2026,70000,48000,22000,USD,David Vance
+Executive,Discretionary,Q3-2026,150000,95000,55000,USD,David Vance

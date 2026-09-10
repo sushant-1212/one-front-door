@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environments
+.env
+.venv/
+env/
+venv/
+
+# Testing and build
+.pytest_cache/
+.coverage
+dist/
+
+# SQLite databases (transient logs)
+*.db-journal
+*.db-wal
+
+# OS files
+.DS_Store
+Thumbs.db

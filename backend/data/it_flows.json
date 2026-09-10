@@ -1,0 +1,75 @@
+{
+  "vpn_troubleshooting": {
+    "title": "VPN Connectivity Troubleshooting",
+    "description": "Diagnosing and fixing GlobalProtect / OpenVPN issues",
+    "steps": {
+      "step_1": {
+        "message": "Let's diagnose your VPN connection issue. First, please ensure your local Wi-Fi has active internet access, then right-click the GlobalProtect icon in your system tray and select **'Refresh Connection'**.\n\nDid this restore your VPN connection?",
+        "options": [
+          { "label": "Yes, connection restored", "next_step": "resolved" },
+          { "label": "No, still showing disconnected or error", "next_step": "step_2" }
+        ]
+      },
+      "step_2": {
+        "message": "Next, let's flush your local DNS cache and verify client certificates:\n1. Open PowerShell or Terminal.\n2. Run: `ipconfig /flushdns`\n3. Wait 10 seconds and click **Connect** again.\n\nDid refreshing the DNS cache solve the problem?",
+        "options": [
+          { "label": "Yes, it connected successfully", "next_step": "resolved" },
+          { "label": "No, error 403 / gateway timeout persists", "next_step": "step_3_verification" }
+        ]
+      },
+      "step_3_verification": {
+        "message": "Your VPN profile certificate requires secure re-synchronization. Because this modifies network security tokens, enterprise policy requires **Identity Verification**.",
+        "requires_verification": true,
+        "verification_prompt": "Please enter your 4-digit Employee Security PIN to authorize token re-provisioning:",
+        "on_verified_next_step": "step_4_action"
+      },
+      "step_4_action": {
+        "message": "Identity verified successfully. Attempting automated certificate re-provisioning for host `vpn.contoso.internal`...\n\n⚠️ Automated gateway re-sync failed: Gateway node US-EAST-04 reports authentication lease expired on Active Directory domain.",
+        "options": [
+          { "label": "Auto-Escalate to Tier-2 IT Support", "next_step": "escalate" }
+        ]
+      }
+    }
+  },
+  "password_reset": {
+    "title": "Corporate Account Password Reset",
+    "description": "Self-service enterprise password unlock and sync",
+    "steps": {
+      "step_1": {
+        "message": "To initiate a secure password reset for your Contoso Single Sign-On (SSO) account, enterprise policy mandates identity verification.",
+        "requires_verification": true,
+        "verification_prompt": "Please verify your Employee PIN or Auth code to generate a one-time reset token:",
+        "on_verified_next_step": "step_2_success"
+      },
+      "step_2_success": {
+        "message": "✅ Identity verified. A secure, single-use password reset link has been dispatched to your registered recovery mobile number ending in **-4409**. The link expires in 15 minutes.",
+        "resolved": true
+      }
+    }
+  },
+  "hardware_provisioning": {
+    "title": "Hardware & Peripherals Request",
+    "description": "Standard employee equipment refresh or upgrade",
+    "steps": {
+      "step_1": {
+        "message": "Which category of hardware do you need to request?",
+        "options": [
+          { "label": "Standard Peripheral (Monitor, Keyboard, Dock)", "next_step": "step_standard" },
+          { "label": "Workstation / Laptop Replacement", "next_step": "step_laptop" }
+        ]
+      },
+      "step_standard": {
+        "message": "Standard peripherals under $300 are pre-approved under IT FastTrack. We can dispatch a Dell Dual 27-inch 4K Monitor or CalDigit Thunderbolt 4 dock.",
+        "options": [
+          { "label": "Dispatch to my primary registered address", "next_step": "escalate" }
+        ]
+      },
+      "step_laptop": {
+        "message": "Laptop upgrades require your Department Manager's cost-center approval. Escalating to IT Provisioning Team with manager Sarah Jenkins tagged.",
+        "options": [
+          { "label": "Submit Hardware Provisioning Request", "next_step": "escalate" }
+        ]
+      }
+    }
+  }
+}

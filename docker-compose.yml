@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  orchestrator:
+    build: .
+    ports:
+      - "8000:8000"
+      - "8501:8501"
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./backend/data:/app/backend/data
+      - db-data:/app/backend
+    restart: unless-stopped
+
+volumes:
+  db-data:
