@@ -294,7 +294,7 @@ export default function App() {
       <div className="demo-ribbon">
         <div className="demo-label">
           <span>⚡</span>
-          <span>1-Click Pitch Script:</span>
+          <span>Interactive Demo Scenarios:</span>
         </div>
         {DEMO_STEPS.map((step) => (
           <button
@@ -311,7 +311,7 @@ export default function App() {
           style={{ borderColor: '#f59e0b', color: '#fbbf24' }}
           onClick={() => setShowObservabilityModal(true)}
         >
-          <span>📈 6. Compliance Dashboard</span>
+          <span>📈 Observability Dashboard</span>
         </button>
       </div>
 
@@ -459,6 +459,50 @@ export default function App() {
 
           {/* Omni-Input Box (The One Front Door) */}
           <div className="input-dock">
+            <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '10px', alignItems: 'center' }}>
+              <span style={{ fontSize: '0.70rem', color: '#94a3b8', fontWeight: 700, textTransform: 'uppercase', whiteSpace: 'nowrap', letterSpacing: '0.05em' }}>
+                💡 Try Real-Time:
+              </span>
+              {[
+                "Can I take leave next Monday?",
+                "How do I connect to office Wi-Fi?",
+                "Where is my pay slip?",
+                "My computer screen is flickering",
+                "How much did marketing spend in Q3?",
+                "Can I expense my dinner from last night?"
+              ].map((suggestion, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => handleSendMessage(suggestion)}
+                  disabled={isLoading}
+                  style={{
+                    background: 'rgba(30, 41, 59, 0.75)',
+                    border: '1px solid rgba(255, 255, 255, 0.12)',
+                    color: '#cbd5e1',
+                    fontSize: '0.76rem',
+                    padding: '4px 12px',
+                    borderRadius: '9999px',
+                    cursor: 'pointer',
+                    whiteSpace: 'nowrap',
+                    transition: 'all 0.2s ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = '#6366f1';
+                    e.currentTarget.style.color = '#ffffff';
+                    e.currentTarget.style.background = 'rgba(99, 102, 241, 0.2)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
+                    e.currentTarget.style.color = '#cbd5e1';
+                    e.currentTarget.style.background = 'rgba(30, 41, 59, 0.75)';
+                  }}
+                >
+                  {suggestion}
+                </button>
+              ))}
+            </div>
+
             <form
               className="input-container"
               onSubmit={(e) => {

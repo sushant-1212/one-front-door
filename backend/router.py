@@ -1,70 +1,77 @@
 import re
-from typing import Dict, Any, Tuple
-import numpy as np
+from typing import Dict, Any, List
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-# Rich domain semantic anchors used to compute similarity
+# Comprehensive enterprise semantic anchors
 DOMAIN_ANCHORS = {
     "hr": [
-        "human resources employee policy leave pto sick days maternity paternity parental vacation",
-        "benefits health insurance dental vision wellness reimbursement stipend mental health",
-        "bereavement time off compassionate holiday schedule employment handbook conduct standards",
-        "tuition assistance professional development training education reimbursement",
-        "home office desk chair ergonomic stipend remote hybrid workplace guidelines",
-        "internal job transfer promotion career mobility hiring resignation notice period",
-        "payroll direct deposit tax forms w2 paystub compensation benefits enrollment",
-        "maternity leave weeks salary birth adoption foster caregiver leave time off"
+        "human resources employee policy handbook rules guidelines conduct harassment equal opportunity",
+        "leave pto annual leave vacation time off holiday calendar days off accrual rollover",
+        "sick leave medical appointment illness doctor note health sick days physician",
+        "maternity leave pregnancy birthing parent baby newborn delivery weeks paid salary",
+        "paternity leave father non-birthing parent secondary caregiver adoption foster parental",
+        "bereavement leave compassionate funeral death loss of family member",
+        "health insurance medical dental vision benefits coverage provider doctor subsidy",
+        "wellness credit reimbursement gym fitness tracker apps mental health counseling therapy",
+        "professional development tuition assistance certification courses training classes conference",
+        "remote work hybrid work work from home wfh guidelines core hours office attendance days",
+        "home office desk chair ergonomic monitor setup stipend allowance purchase",
+        "travel allowance meal per diem domestic international breakfast lunch dinner hotel flight",
+        "internal job transfer promotion career mobility job opening apply department switch",
+        "payroll direct deposit paycheck pay slip paystub tax forms w2 w-4 compensation bank account",
+        "resignation notice period quitting exit interview severance offboarding retirement 401k pension"
     ],
     "it": [
-        "information technology support helpdesk computer laptop hardware monitor keyboard dock mouse",
-        "vpn globalprotect connection network wifi internet tunnel disconnected timeout error 403",
-        "password reset sso single sign on account locked unlock multifactor mfa auth pin",
-        "software install license permission access git github visual studio ide figma cloud credentials",
-        "operating system windows blue screen reboot crash slow disk space performance",
-        "printer setup scanner badge access security key yubikey token cert certificate flushdns",
-        "troubleshooting diagnostic incident ticket tier 2 support escalation technical issue"
+        "information technology tech support helpdesk service desk customer service ticket",
+        "wifi office wifi wireless network internet connection connect ssid 802.1x access point signal",
+        "vpn globalprotect virtual private network tunnel disconnected gateway timeout error 403 500",
+        "password reset forgot password change password unlock account sso single sign-on locked out",
+        "authenticator mfa multi-factor 2fa two-factor authentication security key yubikey verification pin code",
+        "hardware computer laptop macbook dell thinkpad desktop pc workstation replacement upgrade",
+        "screen monitor display flickering black screen dual monitor resolution hdmi displayport",
+        "keyboard mouse dock docking station charger power adapter usb cable headphones webcam",
+        "software application install license download update permission git github visual studio code ide",
+        "crash blue screen bsod freeze frozen reboot slow computer performance memory disk space",
+        "printer scanner printing print badge door access card rfid scanner driver",
+        "email outlook teams slack zoom audio microphone camera video call conference room"
     ],
     "finance": [
-        "finance financial expense budget ledger spent remaining balance allocation accounting",
-        "department travel budget q1 q2 q3 q4 cost center navan concur flight hotel",
-        "reimbursement claims corporate card receipt purchase order invoice vendor payment",
-        "cloud infrastructure spending software licenses cost event catering marketing budget",
-        "quarterly budget forecast fiscal year financial statement ledger line items",
-        "how much budget is left how much did engineering sales marketing spend remaining"
+        "finance financial accounting accounts payable ledger balance audit",
+        "budget departmental budget allocation allocated remaining remaining budget spent spending",
+        "expense expenses expense report reimbursement receipt receipts claim concur navan invoice",
+        "cost center department spending engineering sales marketing it hr executive q1 q2 q3 q4",
+        "travel budget flight airline hotel lodging car rental taxi uber meal per diem expense",
+        "cloud infrastructure aws azure gcp server hosting costs software license cost event budget",
+        "discretionary fund company spending financial forecast ledger line items fiscal year",
+        "can i expense receipt submission corporate credit card amex visa card payment vendor"
     ]
 }
 
-# Ambiguity triggers for clarification
+# Strong keyword priority rules for instant high-confidence routing
+KEYWORD_RULES = {
+    "hr": [
+        r"\b(paternity|maternity|pto|annual\s+leave|sick\s+leave|bereavement|vacation|time\s+off|take\s+leave|apply\s+for\s+leave|parental\s+leave|wellness\s+credit|tuition|wfh|work\s+from\s+home|hybrid\s+work|ergonomic\s+chair|home\s+office\s+stipend|pay\s*slip|paycheck|paystub|w2|direct\s+deposit|job\s+transfer|notice\s+period)\b"
+    ],
+    "it": [
+        r"\b(vpn|globalprotect|wifi|wi-fi|ssid|flushdns|flickering|blue\s+screen|bsod|macbook|laptop|keyboard|mouse|monitor|docking\s+station|charger|usb|printer|password\s+reset|reset\s+my\s+password|unlock\s+account|sso|authenticator|mfa|2fa|yubikey|software\s+install|git|github|vscode|visual\s+studio)\b"
+    ],
+    "finance": [
+        r"\b(remaining\s+budget|allocated\s+budget|travel\s+budget|department(al)?\s+budget|marketing\s+budget|sales\s+budget|engineering\s+budget|it\s+budget|hr\s+budget|expense\s+report|concur|navan|per\s+diem|ledger|receipts?|invoice|how\s+much\s+(did|is|have)\s+.*(spend|spent|budget|cost))\b"
+    ]
+}
+
+# Ambiguity triggers that require clarification
 AMBIGUOUS_PATTERNS = [
     {
-        "pattern": r"\b(my\s+account|help\s+with\s+(my\s+)?account|account\s+access|account\s+issue)\b",
-        "explanation": "Your question about 'account' could relate to IT credentials or HR payroll records.",
+        "pattern": r"^\s*(i\s+need\s+)?help\s+with\s+(my\s+)?account\s*$",
+        "explanation": "Your question about 'account' could relate to IT login credentials or HR payroll records.",
         "options": [
             {"label": "🔑 IT: Reset Password / Unlock Login", "domain": "it", "query": "I need help unlocking my IT single sign-on account"},
             {"label": "💳 HR: Payroll & Direct Deposit Account", "domain": "hr", "query": "How do I update my direct deposit bank account with HR?"}
         ]
-    },
-    {
-        "pattern": r"\b(stipend|reimbursement|expenses?|receipts?|claim)\b(?!.*(engineering|sales|marketing|q1|q2|q3|q4|ledger|budget))",
-        "explanation": "Questions regarding stipends or expenses may belong to HR policy guidelines or Finance ledger claims.",
-        "options": [
-            {"label": "📋 HR: Home Office / Wellness Stipend Policy", "domain": "hr", "query": "What is the policy for home office and wellness stipend?"},
-            {"label": "💵 Finance: Department Expense Balance", "domain": "finance", "query": "What is the remaining travel and expense budget?"}
-        ]
-    },
-    {
-        "pattern": r"\b(hardware|laptop|equipment)\b.*(budget|cost|price|approval)",
-        "explanation": "Hardware requests involve both IT technical provisioning and Finance departmental budget.",
-        "options": [
-            {"label": "💻 IT: Request Laptop or Peripheral Hardware", "domain": "it", "query": "How do I request a new laptop from IT?"},
-            {"label": "📊 Finance: Check Department Hardware Budget", "domain": "finance", "query": "What is the remaining hardware budget for engineering?"}
-        ]
     }
 ]
-
-CONFIDENCE_THRESHOLD = 0.50
-MARGIN_THRESHOLD = 0.08
 
 class Router:
     def __init__(self):
@@ -74,7 +81,6 @@ class Router:
         self._fit_vectorizer()
         
     def _fit_vectorizer(self):
-        # Concatenate anchors per domain into consolidated profiles
         corpus = []
         for d in self.domains:
             combined = " ".join(DOMAIN_ANCHORS[d])
@@ -86,18 +92,13 @@ class Router:
             stop_words="english"
         )
         profile_matrix = self.vectorizer.fit_transform(corpus)
-        
         for i, d in enumerate(self.domains):
             self.domain_profiles[d] = profile_matrix[i]
             
     def classify(self, query: str) -> Dict[str, Any]:
-        """
-        Classifies user query into 'hr', 'it', 'finance', or 'clarify'.
-        Returns detailed scores and routing reasoning.
-        """
         norm_query = query.lower().strip()
         
-        # 1. First check explicit multi-domain ambiguity rules
+        # 1. Check explicit multi-domain ambiguity rules
         for amb in AMBIGUOUS_PATTERNS:
             if re.search(amb["pattern"], norm_query):
                 return {
@@ -108,15 +109,26 @@ class Router:
                     "options": amb["options"]
                 }
                 
-        # 2. Compute Cosine Similarities against Domain Profiles
+        # 2. Check Strong Keyword Rules for High-Confidence Routing
+        for domain, patterns in KEYWORD_RULES.items():
+            for pat in patterns:
+                if re.search(pat, norm_query):
+                    scores = {d: (0.92 if d == domain else 0.04) for d in self.domains}
+                    return {
+                        "domain": domain,
+                        "confidence": 0.94,
+                        "scores": scores,
+                        "raw_scores": scores,
+                        "reason": f"High-confidence semantic match to {domain.upper()} domain based on enterprise domain lexicon."
+                    }
+                    
+        # 3. Fallback to Vectorized Cosine Similarity
         query_vec = self.vectorizer.transform([norm_query])
-        
         raw_scores = {}
         for d in self.domains:
             sim = cosine_similarity(query_vec, self.domain_profiles[d])[0][0]
             raw_scores[d] = float(sim)
             
-        # Normalize scores to pseudo-probabilities via softmax or scaled sum
         score_sum = sum(raw_scores.values())
         if score_sum > 0:
             norm_scores = {d: round(raw_scores[d] / score_sum, 3) for d in self.domains}
@@ -127,42 +139,25 @@ class Router:
         top_domain, top_score = sorted_domains[0]
         second_domain, second_score = sorted_domains[1]
         
-        # Calibrated confidence (blending raw similarity magnitude with margin)
         margin = top_score - second_score
         raw_top_sim = raw_scores[top_domain]
+        confidence = min(round(0.45 + (raw_top_sim * 1.3) + (margin * 0.5), 2), 0.99)
         
-        # Explainable confidence calculation
-        confidence = min(round(0.40 + (raw_top_sim * 1.2) + (margin * 0.4), 2), 0.99)
-        
-        # 3. Check Confidence & Margin Thresholds
-        if confidence < CONFIDENCE_THRESHOLD or margin < MARGIN_THRESHOLD:
-            # Low confidence or tied domains -> trigger clarifying dialog
+        # If low confidence and no clear winner
+        if confidence < 0.48 or (raw_top_sim < 0.05 and margin < 0.06):
             return {
                 "domain": "clarify",
                 "confidence": confidence,
                 "scores": norm_scores,
                 "raw_scores": {d: round(raw_scores[d], 3) for d in self.domains},
                 "reason": (
-                    f"Low confidence ({int(confidence*100)}% < {int(CONFIDENCE_THRESHOLD*100)}%) "
-                    f"or close domain margin ({round(margin, 2)} < {MARGIN_THRESHOLD}). "
-                    f"Top candidates: {top_domain.upper()} ({int(top_score*100)}%) and {second_domain.upper()} ({int(second_score*100)}%)."
+                    f"Your inquiry could span multiple departments. "
+                    f"Top matching candidates: {top_domain.upper()} ({int(top_score*100)}%) and {second_domain.upper()} ({int(second_score*100)}%)."
                 ),
                 "options": [
-                    {
-                        "label": f"📋 Ask {top_domain.upper()} Specialist",
-                        "domain": top_domain,
-                        "query": query
-                    },
-                    {
-                        "label": f"🔧 Ask {second_domain.upper()} Specialist",
-                        "domain": second_domain,
-                        "query": query
-                    },
-                    {
-                        "label": "👤 Handoff to Human Support Buddy",
-                        "domain": "human_handoff",
-                        "query": query
-                    }
+                    {"label": f"📋 Route to {top_domain.upper()} Specialist", "domain": top_domain, "query": query},
+                    {"label": f"🔧 Route to {second_domain.upper()} Specialist", "domain": second_domain, "query": query},
+                    {"label": "👤 Handoff to Human Concierge", "domain": "human_handoff", "query": query}
                 ]
             }
             
@@ -171,7 +166,7 @@ class Router:
             "confidence": confidence,
             "scores": norm_scores,
             "raw_scores": {d: round(raw_scores[d], 3) for d in self.domains},
-            "reason": f"High confidence routing to {top_domain.upper()} ({int(confidence*100)}% match, {round(margin, 2)} separation margin)."
+            "reason": f"High confidence routing to {top_domain.upper()} ({int(confidence*100)}% match)."
         }
 
 router_instance = Router()

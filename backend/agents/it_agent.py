@@ -1,5 +1,6 @@
 import os
 import json
+import re
 from typing import Dict, Any, Optional
 try:
     from database import create_support_ticket
@@ -31,23 +32,18 @@ class ITAgent:
         user_name: str = "Alex Chen",
         action_payload: Optional[Dict[str, Any]] = None
     ) -> Dict[str, Any]:
-        """
-        Handles incoming IT queries or state transitions.
-        """
         session_state = session_state or {}
         active_flow_key = session_state.get("flow_key")
         current_step_key = session_state.get("step_key")
         failed_attempts = session_state.get("failed_attempts", 0)
         is_verified = session_state.get("is_verified", False)
         
-        # Check if user passed an interactive button response or verification
+        # Action Payload handling (Buttons or PIN verification)
         if action_payload:
             selected_next = action_payload.get("next_step")
             provided_pin = action_payload.get("pin")
             
-            # If currently waiting on verification
             if provided_pin:
-                # Mock verification: PIN '1234' or any 4 digits
                 if len(str(provided_pin).strip()) == 4:
                     is_verified = True
                     flow = self.flows.get(active_flow_key, {})
@@ -61,7 +57,7 @@ class ITAgent:
                     return {
                         "agent": "IT Service Desk",
                         "domain": "it",
-                        "response": "❌ Invalid PIN entered. Security authorization failed. Please provide your 4-digit Employee PIN to proceed.",
+                        "response": "❌ Invalid PIN entered. Security authorization failed. Please enter your 4-digit Employee PIN to proceed.",
                         "requires_verification": True,
                         "state": session_state,
                         "confidence": 0.95
@@ -72,50 +68,128 @@ class ITAgent:
                     return {
                         "agent": "IT Service Desk",
                         "domain": "it",
-                        "response": "🎉 Great! Glad to hear the connection issue has been resolved. Your session has been marked as completed. Feel free to ask if you need anything else.",
+                        "response": "🎉 Excellent! The technical issue has been resolved. Your session has been marked completed. Let me know if you need any other assistance.",
                         "options": [],
-                        "state": {}, # reset state
+                        "state": {},
                         "confidence": 0.95
                     }
                 elif selected_next == "escalate":
+                    category = "IT Service Escalation"
+                    if "vpn" in (active_flow_key or ""):
+                        category = "Network / VPN"
+                    elif "display" in (active_flow_key or "") or "screen" in (active_flow_key or ""):
+                        category = "Hardware & Display"
+                    elif "wifi" in (active_flow_key or ""):
+                        category = "Office Wireless"
+                        
                     ticket = create_support_ticket(
                         user_id=user_id,
                         user_name=user_name,
-                        category="Network / VPN",
-                        issue_summary="GlobalProtect VPN recurring disconnect & authentication lease expiry",
-                        troubleshooting_log="Step 1: Connection refresh failed. Step 2: DNS flush completed. Step 3: Identity verified (PIN authorized). Step 4: Gateway US-EAST-04 lease renewal rejected.",
+                        category=category,
+                        issue_summary=f"Automated diagnostics unresolved for flow: {active_flow_key}",
+                        troubleshooting_log=f"User followed self-service steps for {active_flow_key} without resolution. Escalated to Tier-2.",
                         priority="HIGH",
-                        assigned_team="Tier-2 Network Operations"
+                        assigned_team="Tier-2 IT Operations"
                     )
                     return {
                         "agent": "IT Service Desk",
                         "domain": "it",
-                        "response": f"🚨 Automated troubleshooting has been exhausted. I have escalated this incident directly to Tier-2 Network Operations. An engineer has been paged.",
+                        "response": "🚨 Diagnostics did not resolve the issue. I have generated an official incident ticket for Tier-2 Support.",
                         "ticket": ticket,
-                        "state": {}, # reset
+                        "state": {},
                         "confidence": 0.98
                     }
                 else:
                     failed_attempts += 1
                     return self._render_step(active_flow_key, selected_next, failed_attempts, is_verified, user_id, user_name)
 
-        # Detect intent to select flow if not in active flow
         q_lower = query.lower()
-        if not active_flow_key:
-            if any(w in q_lower for w in ["vpn", "globalprotect", "disconnect", "tunnel", "wifi", "network", "remote connect"]):
-                active_flow_key = "vpn_troubleshooting"
-            elif any(w in q_lower for w in ["password", "reset", "unlock", "sso", "login locked"]):
-                active_flow_key = "password_reset"
-            elif any(w in q_lower for w in ["laptop", "monitor", "hardware", "dock", "mouse", "keyboard", "macbook"]):
-                active_flow_key = "hardware_provisioning"
-            else:
-                active_flow_key = "vpn_troubleshooting"
-                
+
+        # Specific IT Category Detections
+        if any(w in q_lower for w in ["screen", "monitor", "display", "flicker", "flickering", "hdmi", "resolution"]):
+            return {
+                "agent": "IT Service Desk",
+                "domain": "it",
+                "response": (
+                    "🖥️ **Display & Monitor Diagnostics**\n\n"
+                    "Let's troubleshoot your screen issue:\n"
+                    "1. **Check Cables**: Disconnect and firmly re-seat your HDMI/DisplayPort cable or USB-C dock connection.\n"
+                    "2. **Refresh Rate**: Right-click Desktop $\\rightarrow$ **Display settings** $\\rightarrow$ **Advanced display** $\\rightarrow$ Ensure refresh rate is set to **60 Hz**.\n"
+                    "3. **Dock Power**: Power-cycle your docking station by unplugging power for 10 seconds.\n\n"
+                    "Did these steps resolve the flickering or display problem?"
+                ),
+                "options": [
+                    { "label": "Yes, screen is working normally", "next_step": "resolved" },
+                    { "label": "No, need replacement monitor / ticket", "next_step": "escalate" }
+                ],
+                "state": { "flow_key": "display_diagnostics", "step_key": "step_1", "failed_attempts": 0, "is_verified": False },
+                "confidence": 0.96
+            }
+
+        if any(w in q_lower for w in ["wifi", "wi-fi", "wireless", "ssid", "office internet"]):
+            return {
+                "agent": "IT Service Desk",
+                "domain": "it",
+                "response": (
+                    "📶 **Corporate Wi-Fi Connectivity**\n\n"
+                    "To connect to Contoso high-speed wireless:\n"
+                    "1. Select SSID: **`Contoso-Corporate`** (do not use *Contoso-Guest* for internal tools).\n"
+                    "2. When prompted, select **EAP Method: PEAP** and enter your corporate Single Sign-On credentials.\n"
+                    "3. Accept the **Contoso Enterprise Root Certificate**.\n\n"
+                    "If you cannot connect, would you like to escalate to Network Operations?"
+                ),
+                "options": [
+                    { "label": "Connected successfully", "next_step": "resolved" },
+                    { "label": "Still failing to authenticate", "next_step": "escalate" }
+                ],
+                "state": { "flow_key": "wifi_diagnostics", "step_key": "step_1", "failed_attempts": 0, "is_verified": False },
+                "confidence": 0.96
+            }
+
+        if any(w in q_lower for w in ["mouse", "keyboard", "charger", "dock", "cable", "adapter"]):
+            return {
+                "agent": "IT Service Desk",
+                "domain": "it",
+                "response": (
+                    "🖱️ **Standard Peripherals & Accessories Request**\n\n"
+                    "Standard peripherals (Dell Dual 27\" 4K monitors, ergonomic keyboards, wireless mice, and 90W USB-C chargers) are pre-approved under the **IT FastTrack Catalog**.\n\n"
+                    "Would you like me to submit an automated hardware dispatch request to your office desk or registered home address?"
+                ),
+                "options": [
+                    { "label": "Submit Hardware Dispatch Request", "next_step": "escalate" }
+                ],
+                "state": { "flow_key": "hardware_dispatch", "step_key": "step_1", "failed_attempts": 0, "is_verified": False },
+                "confidence": 0.95
+            }
+
+        if any(w in q_lower for w in ["password", "unlock", "forgot password", "login locked", "reset my password"]):
+            active_flow_key = "password_reset"
             current_step_key = "step_1"
-            failed_attempts = 0
-            is_verified = False
-            
-        return self._render_step(active_flow_key, current_step_key, failed_attempts, is_verified, user_id, user_name)
+            return self._render_step(active_flow_key, current_step_key, failed_attempts, is_verified, user_id, user_name)
+
+        if any(w in q_lower for w in ["vpn", "globalprotect", "tunnel", "disconnect", "error 403"]):
+            active_flow_key = "vpn_troubleshooting"
+            current_step_key = "step_1"
+            return self._render_step(active_flow_key, current_step_key, failed_attempts, is_verified, user_id, user_name)
+
+        # General technical troubleshooting flow
+        return {
+            "agent": "IT Service Desk",
+            "domain": "it",
+            "response": (
+                f"🔧 **Contoso IT Service Desk**\n\n"
+                f"I've received your inquiry: *\"{query}\"*\n\n"
+                f"To help resolve this quickly, please select what type of assistance you need or proceed directly to an incident ticket:"
+            ),
+            "options": [
+                { "label": "🔑 Password / Account Reset", "query": "I need to reset my corporate password" },
+                { "label": "🌐 VPN & Remote Access", "query": "My GlobalProtect VPN won't connect" },
+                { "label": "🖥️ Hardware or Peripherals", "query": "My computer monitor is having issues" },
+                { "label": "🚨 Create Level-2 IT Support Ticket", "next_step": "escalate" }
+            ],
+            "state": { "flow_key": "general_it", "step_key": "step_1", "failed_attempts": 0, "is_verified": False },
+            "confidence": 0.90
+        }
         
     def _render_step(
         self,
@@ -130,7 +204,6 @@ class ITAgent:
         flow = self.flows.get(flow_key, {})
         step = flow.get("steps", {}).get(step_key, {})
         
-        # Check if step triggers auto ticket escalation after multiple failures
         if step_key == "escalate" or failed_attempts >= 3:
             ticket = create_support_ticket(
                 user_id=user_id,
