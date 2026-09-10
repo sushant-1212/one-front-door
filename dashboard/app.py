@@ -19,7 +19,7 @@ st.set_page_config(
 )
 
 st.title("🚪 One Front Door — Enterprise Observability & Audit Center")
-st.caption("Microsoft Innovate 2026 | Real-time Routing Telemetry, RBAC Auditing & Incident Backlog")
+st.caption("Real-time Routing Telemetry, RBAC Governance Auditing & Incident Backlog")
 
 # Fetch latest metrics
 metrics = database.get_observability_metrics()
@@ -109,4 +109,4 @@ with tab3:
         st.info("No tickets escalated yet. Trigger an IT escalation step in chat to observe ticket generation.")
 
 st.markdown("---")
-st.caption("🔒 One Front Door Orchestration Layer • Microsoft Innovate 2026 Submission")
+st.caption("🔒 One Front Door Enterprise Multi-Agent Orchestration Platform")

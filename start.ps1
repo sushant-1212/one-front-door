@@ -1,6 +1,5 @@
-# One Front Door - PowerShell Launcher
 Write-Host "========================================================" -ForegroundColor Cyan
-Write-Host "  One Front Door - Microsoft Innovate 2026 Launcher" -ForegroundColor Green
+Write-Host "  One Front Door - Enterprise Platform Launcher" -ForegroundColor Green
 Write-Host "========================================================" -ForegroundColor Cyan
 
 Start-Process powershell -ArgumentList "-NoExit", "-Command", "python backend\main.py"

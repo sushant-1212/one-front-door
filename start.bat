@@ -1,7 +1,7 @@
 @echo off
 title One Front Door - Multi-Agent Enterprise Orchestrator
 echo ========================================================
-echo   One Front Door - Microsoft Innovate 2026 Launch
+echo   One Front Door - Enterprise Orchestration Platform
 echo ========================================================
 echo Starting FastAPI Orchestration Gateway on port 8000...
 start cmd /k "python backend\main.py"

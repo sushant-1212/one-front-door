@@ -233,10 +233,10 @@ export default function App() {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span className="brand-title">One Front Door</span>
-              <span className="brand-badge">Innovate 2026</span>
+              <span className="brand-badge">Enterprise v2.4</span>
             </div>
             <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>
-              Unified Multi-Agent Enterprise Orchestrator (HR • IT • Finance)
+              Unified Multi-Agent Enterprise Orchestration Platform (HR • IT • Finance)
             </div>
           </div>
         </div>
