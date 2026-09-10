@@ -275,7 +275,7 @@ if os.path.exists(frontend_dist):
     def serve_index():
         index_path = os.path.join(frontend_dist, "index.html")
         if os.path.exists(index_path):
-            return FileResponse(index_path)
+            return FileResponse(index_path, headers={"Cache-Control": "no-cache, no-store, must-revalidate"})
         return {"status": "online", "message": "One Front Door API is running"}
 
     @app.get("/{full_path:path}")
@@ -287,7 +287,7 @@ if os.path.exists(frontend_dist):
             return FileResponse(file_path)
         index_path = os.path.join(frontend_dist, "index.html")
         if os.path.exists(index_path):
-            return FileResponse(index_path)
+            return FileResponse(index_path, headers={"Cache-Control": "no-cache, no-store, must-revalidate"})
         return {"status": "online", "message": "One Front Door API is running"}
 
 if __name__ == "__main__":

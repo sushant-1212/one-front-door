@@ -74,7 +74,7 @@ export default function App() {
       domain: 'orchestrator',
       agent: 'One Front Door Gateway',
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      text: "👋 Welcome to **One Front Door**. I am your unified enterprise gateway. Ask any question regarding **HR policies**, **IT service troubleshooting**, or **Finance budget ledgers** — our neural router will dynamically classify, check security permissions, and route you to the authoritative specialist.",
+      text: "👋 Welcome to One Front Door, your unified enterprise gateway. Ask any question regarding HR policies, IT service troubleshooting, or Finance budget ledgers — our neural router will dynamically classify, check security permissions, and route you to the authoritative specialist.",
       telemetry: {
         routed_domain: 'system',
         confidence: 1.0,
@@ -342,8 +342,7 @@ export default function App() {
                     </div>
 
                     <div className="message-card">
-                      {/* Formatted body with support for markdown quotes & tables */}
-                      <div style={{ whiteSpace: 'pre-wrap' }}>{msg.text}</div>
+                      <FormattedMessage text={msg.text} />
 
                       {/* Policy Citation Card */}
                       {msg.citation && (
@@ -704,4 +703,114 @@ export default function App() {
 
 function int(num) {
   return Math.round(num || 0);
+}
+
+function FormattedMessage({ text }) {
+  if (!text) return null;
+
+  const lines = text.split('\n');
+  const elements = [];
+  let tableRows = [];
+  let inTable = false;
+
+  const renderInline = (str) => {
+    if (!str) return '';
+    const parts = [];
+    const regex = /(\*\*[^*]+\*\*|`[^`]+`)/g;
+    let lastIdx = 0;
+    let match;
+    let key = 0;
+
+    while ((match = regex.exec(str)) !== null) {
+      if (match.index > lastIdx) {
+        parts.push(str.substring(lastIdx, match.index));
+      }
+      const token = match[0];
+      if (token.startsWith('**') && token.endsWith('**')) {
+        parts.push(<strong key={key++} style={{ fontWeight: 600, color: '#ffffff' }}>{token.slice(2, -2)}</strong>);
+      } else if (token.startsWith('`') && token.endsWith('`')) {
+        parts.push(<code key={key++}>{token.slice(1, -1)}</code>);
+      }
+      lastIdx = regex.lastIndex;
+    }
+    if (lastIdx < str.length) {
+      parts.push(str.substring(lastIdx));
+    }
+    return parts.length > 0 ? parts : str;
+  };
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    if (line.trim().startsWith('|') && line.trim().endsWith('|')) {
+      if (line.includes('---')) continue;
+      const cells = line.split('|').slice(1, -1).map(c => c.trim());
+      tableRows.push(cells);
+      inTable = true;
+      continue;
+    } else if (inTable) {
+      elements.push(
+        <div key={`table-${i}`} style={{ overflowX: 'auto', margin: '8px 0' }}>
+          <table>
+            <thead>
+              <tr>
+                {tableRows[0]?.map((h, idx) => <th key={idx}>{h}</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              {tableRows.slice(1).map((row, rIdx) => (
+                <tr key={rIdx}>
+                  {row.map((cell, cIdx) => <td key={cIdx}>{renderInline(cell)}</td>)}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+      tableRows = [];
+      inTable = false;
+    }
+
+    if (line.startsWith('> ')) {
+      elements.push(
+        <blockquote key={i}>
+          {renderInline(line.substring(2))}
+        </blockquote>
+      );
+    } else if (line.trim().startsWith('• ') || line.trim().startsWith('- ')) {
+      elements.push(
+        <div key={i} style={{ display: 'flex', gap: '8px', paddingLeft: '8px', margin: '3px 0' }}>
+          <span style={{ color: '#818cf8' }}>•</span>
+          <span>{renderInline(line.replace(/^[•\-]\s*/, ''))}</span>
+        </div>
+      );
+    } else if (!line.trim()) {
+      elements.push(<div key={i} style={{ height: '6px' }} />);
+    } else {
+      elements.push(<p key={i}>{renderInline(line)}</p>);
+    }
+  }
+
+  if (inTable && tableRows.length > 0) {
+    elements.push(
+      <div key="final-table" style={{ overflowX: 'auto', margin: '8px 0' }}>
+        <table>
+          <thead>
+            <tr>
+              {tableRows[0]?.map((h, idx) => <th key={idx}>{h}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {tableRows.slice(1).map((row, rIdx) => (
+              <tr key={rIdx}>
+                {row.map((cell, cIdx) => <td key={cIdx}>{renderInline(cell)}</td>)}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+
+  return <div>{elements}</div>;
 }
