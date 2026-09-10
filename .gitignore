@@ -14,7 +14,7 @@ venv/
 # Testing and build
 .pytest_cache/
 .coverage
-dist/
+# dist/ is tracked for zero-dependency cloud deployments
 
 # SQLite databases (transient logs)
 *.db-journal
