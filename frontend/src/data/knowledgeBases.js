@@ -88,6 +88,14 @@ export const DOMAINS = {
         section: 'Sec. 5.1 - UGC Tiered Refund Schedule',
         citation: 'Student Accounts & UGC Refund Policy §5.1',
         excerpt: 'Program withdrawal refund requests are governed by mandatory UGC guidelines: 100% refund (less ₹1,000 processing deduction) if formally withdrawn 15 days or more before the formally notified last admission date; 90% if less than 15 days before; 80% if within 15 days after; 50% between 16 and 30 days after; and 0% beyond 30 days. Security deposits are refunded 100% via direct bank transfer.'
+      },
+      {
+        id: 'DOC-FIN-04',
+        title: 'Scholarship Continuation, UFM Review & Irreversibility Clause',
+        version: 'Scholarship Policy Rev. 2024',
+        section: 'Sec. 3.2 - Retention Evaluation & Irreversible Withdrawal Clause',
+        citation: 'BU Scholarship Policy & Regulations §3.2',
+        excerpt: 'Merit scholarship continuation is formally evaluated after the declaration of even-semester end-term results. Students must maintain a minimum 8.0 CGPA with zero backlogs and zero Unfair Means (UFM) or disciplinary actions. Under the official irreversibility clause, if a scholarship is withdrawn due to GPA shortfall or backlogs, it cannot be restored in subsequent academic years, and full tuition fees must be remitted. Grade improvement exam results are not admissible for scholarship retention.'
       }
     ]
   },
@@ -133,6 +141,14 @@ export const DOMAINS = {
         section: 'Sec. 6.4 - Student Dining, Lounge & Sports Amenities',
         citation: 'Student Welfare & Campus Amenities Handbook §6.4',
         excerpt: 'The central mess serves 4 nutritious meals daily: Breakfast (7:30-9:30 AM), Lunch (12:30-2:30 PM), Evening Snacks (5:00-6:30 PM), and Dinner (7:30-9:30 PM). Students have access to the Rangeela Lounge, snooker, foosball, table tennis, fully equipped gym, basketball & badminton courts, and automated app-based laundry hubs.'
+      },
+      {
+        id: 'DOC-HST-04',
+        title: 'Standing Orders for Hostels, Nalanda Living & In-Hostel Curfew',
+        version: 'Standing Orders 2024-2025',
+        section: 'Sec. 4.1 - In-Hostel Timings, Opposite-Gender Visiting & Off-Campus Housing',
+        citation: 'BU Standing Orders for Hostels §4.1',
+        excerpt: 'Residents must be inside their respective hostel blocks by 11:30 PM (campus main gate curfew is 10:00 PM). Entering rooms of the opposite gender is strictly prohibited. Once allocated, unapproved room changes are forbidden without written approval from the Chief Warden. For students who cannot be accommodated on-campus due to seat limits, verified housing is coordinated via Nalanda Living.'
       }
     ]
   },
@@ -177,6 +193,14 @@ export const DOMAINS = {
         section: 'Sec. 11.3 - CollPoll Admit Card Issuance & Re-evaluation',
         citation: 'Office of the Controller of Examinations §11.3',
         excerpt: 'Digital Hall Tickets / Admit Cards are released on CollPoll 5 days before exams for all eligible students cleared of financial and attendance holds. A student contesting an evaluated grade may apply for Answer Script Re-checking within 15 calendar days of result publication via the ERP examination module with a ₹500 fee per subject (refunded if grade changes).'
+      },
+      {
+        id: 'DOC-ACAD-04',
+        title: 'X-Grade Award, Debarment & Supplementary Examination Restrictions',
+        version: 'Academic Ordinances 2024-2025',
+        section: 'Sec. 9.3 - Debarment Consequences & Course Re-registration',
+        citation: 'BU Academic Regulations & Examination Ordinances §9.3',
+        excerpt: 'Students debarred due to attendance shortage (<75% without approved medical condonation) receive an official "X" Grade on their grade report. Crucially, students awarded an "X" Grade are strictly barred from appearing in Supplementary Examinations and must re-register for the course during the regular semester or Summer Semester. Outstanding academic performance across course components is recognized with an "O" Grade.'
       }
     ]
   },
@@ -263,6 +287,14 @@ export const DOMAINS = {
         section: 'Sec. 1.8 - Library Facilities & Plagiarism Clearance',
         citation: 'LRC Code of Conduct & Research Services §1.8',
         excerpt: 'The LRC features 6 air-conditioned Collaborative Discussion Rooms bookable on the library portal for 2-hour group study slots, as well as Silent Reading Halls open until 12:00 AM midnight (extended to 2:00 AM during End-Semester exams). Final year project reports and research dissertations must undergo mandatory Turnitin anti-plagiarism verification at the LRC reference desk.'
+      },
+      {
+        id: 'DOC-LIB-04',
+        title: '24/7 LRC Access, Circulation Desk Hours & Smart RFID Drop Box',
+        version: 'LRC Operational Guidelines 2024-2025',
+        section: 'Sec. 1.4 - 24/7 Reading Facilities, RFID Book Drop & Mobile App',
+        citation: 'Learning Resource Centre Circulation Policy §1.4',
+        excerpt: 'Central Library and Law Library reading facilities are accessible 24/7 with university smart ID cards. Active circulation desk transactions (issuing and manual renewals) run daily from 9:00 AM to 9:00 PM. Book returns can be completed 24/7 using the automated RFID Book Drop Box. Online catalog reservations, renewal tracking, and account holds are managed via the Web OPAC (libraryopac.bennett.edu.in) and the official "Bennett University LRC" mobile app. For inquiries: libraryhelpdesk@bennett.edu.in.'
       }
     ]
   }

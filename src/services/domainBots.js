@@ -166,6 +166,31 @@ All campus digital infrastructure (Gigabit fiber, CollPoll ERP, biometric turnst
     }
 
     // 2. Scholarships (Merit, Single Girl Child, Defense)
+    if (q.includes('irreversib') || q.includes('restor') || q.includes('regain') || q.includes('ufm') || (q.includes('scholarship') && (q.includes('lose') || q.includes('lost') || q.includes('discontinue') || q.includes('withdrawn')))) {
+      const doc = domain.documents[3] || domain.documents[1];
+      return {
+        domainId: 'finance',
+        title: 'Fees, Accounts & Scholarships Specialist',
+        answer: `Official Bennett University **Scholarship Retention & Irreversibility Regulations**:
+
+- **Annual Retention Evaluation**: Admission and merit scholarships are reviewed annually after the declaration of even-semester end-term results.
+- **Eligibility Standards**: Students must maintain a minimum **8.0 CGPA**, have **zero backlogs**, and have **zero disciplinary or Unfair Means (UFM) cases**.
+- **Strict Irreversibility Clause**: If a scholarship is withdrawn due to CGPA shortfall, backlogs, or disciplinary issues, **it CANNOT be restored in subsequent years**. Students must pay full tuition fees from that semester onwards.
+- **Grade Improvement Restriction**: CGPA gains achieved through grade improvement examinations cannot be used for scholarship retention or restoration.`,
+        citation: {
+          id: doc.id,
+          title: doc.title,
+          section: doc.section,
+          citation: doc.citation,
+          excerpt: doc.excerpt
+        },
+        actions: [
+          { label: 'View Scholarship Policy Document', icon: 'file-text' },
+          { label: 'Contact Accounts Desk', icon: 'mail' }
+        ]
+      };
+    }
+
     if (q.includes('scholarship') || q.includes('merit') || q.includes('girl child') || q.includes('defense') || q.includes('concession') || q.includes('waiver')) {
       const doc = domain.documents[1];
       return {
@@ -302,7 +327,36 @@ All tuition billing, hostel fees, examination fees, and financial aid disbursals
       };
     }
 
-    // 3. Mess Food, Dining Timings & Amenities
+    // 3. Standing Orders, In-hostel curfew (11:30 PM), Nalanda living, room change
+    if (q.includes('nalanda') || q.includes('standing order') || q.includes('opposite gender') || q.includes('room change') || q.includes('11:30') || q.includes('off-campus') || (q.includes('curfew') && q.includes('hostel'))) {
+      const doc = domain.documents[3] || domain.documents[0];
+      return {
+        domainId: 'hostel',
+        title: 'Hostel & Residential Life Specialist',
+        answer: `Official regulations from the **BU Standing Orders for Hostels**:
+
+- **Dual Curfew Timings**:
+  - **Campus Main Gate Curfew**: **10:00 PM** (must enter campus premises via biometric security).
+  - **In-Hostel Block Curfew**: **11:30 PM** (all residents must be inside their respective hostel blocks).
+- **Room Policies & Gender Segregation**: Entering the hostel rooms of students of the opposite gender is strictly prohibited under Level-2 disciplinary code.
+- **Room Change Policy**: Once rooms are allocated, students are strictly forbidden from changing rooms without written authorization from the Chief Warden.
+- **Off-Campus Accommodations (Nalanda Living)**: When on-campus capacity in D1–D6 is fully booked, the university facilitates verified off-campus residential living through **Nalanda Living**.
+- **Campus Essentials**: "BU Basiks" is operational on campus for daily essentials, stationery, and dairy.`,
+        citation: {
+          id: doc.id,
+          title: doc.title,
+          section: doc.section,
+          citation: doc.citation,
+          excerpt: doc.excerpt
+        },
+        actions: [
+          { label: 'View Hostel Standing Orders', icon: 'file-text' },
+          { label: 'Contact Chief Warden Office', icon: 'phone' }
+        ]
+      };
+    }
+
+    // 4. Mess Food, Dining Timings & Amenities
     if (q.includes('mess') || q.includes('food') || q.includes('dining') || q.includes('meal') || q.includes('breakfast') || q.includes('lunch') || q.includes('dinner') || q.includes('rangeela') || q.includes('gym') || q.includes('laundry')) {
       const doc = domain.documents[2];
       return {
@@ -359,7 +413,33 @@ Hostel administration (D1 through D6 blocks including D5) operates under the sup
     const q = query.toLowerCase();
     const domain = DOMAINS.academics;
 
-    // 1. Mandatory 75% Biometric Attendance Rule
+    // 1. X-Grade, Debarment & Supplementary Exam Regulations
+    if (q.includes('x grade') || q.includes('grade x') || q.includes('supplementary') || q.includes('summer semester') || (q.includes('backlog') && !q.includes('scholarship'))) {
+      const doc = domain.documents[3] || domain.documents[0];
+      return {
+        domainId: 'academics',
+        title: 'Academics & Examination Specialist',
+        answer: `Official Bennett University ordinances on **Debarment, X-Grade & Supplementary Exams**:
+
+- **Award of "X" Grade**: A student debarred due to attendance shortage (<75% without approved medical condonation) is formally awarded an **"X" Grade** on their official grade transcript.
+- **Strict Bar on Supplementary Examinations**: Students awarded an **"X" Grade are strictly prohibited from appearing in Supplementary Examinations**.
+- **Mandatory Course Re-registration**: To clear an "X" Grade course, the student must re-register for the entire course either in a subsequent regular semester or during the **Summer Semester** (notified by the Examination Department).
+- **Outstanding Performance**: Exceptional performance across all evaluated components is recognized with an **"O" Grade** (Outstanding).`,
+        citation: {
+          id: doc.id,
+          title: doc.title,
+          section: doc.section,
+          citation: doc.citation,
+          excerpt: doc.excerpt
+        },
+        actions: [
+          { label: 'Register for Summer Semester on CollPoll', icon: 'calendar' },
+          { label: 'Review Academic Ordinances', icon: 'file-text' }
+        ]
+      };
+    }
+
+    // 2. Mandatory 75% Biometric Attendance Rule
     if (q.includes('attendance') || q.includes('75%') || q.includes('75 percent') || q.includes('biometric') || q.includes('debar') || q.includes('condonation') || q.includes('medical')) {
       const doc = domain.documents[0];
       return {
@@ -599,7 +679,34 @@ Academic curriculum, examination schedules, grading policies, and degree require
       };
     }
 
-    // 3. Discussion Rooms & Quiet Study
+    // 3. 24/7 Hours, Circulation Desk, RFID Drop Box & App
+    if (q.includes('drop') || q.includes('timing') || q.includes('hours') || q.includes('close') || q.includes('open') || q.includes('night') || q.includes('desk') || q.includes('app')) {
+      const doc = domain.documents[3] || domain.documents[0];
+      return {
+        domainId: 'library',
+        title: 'Learning Resource Centre (LRC) Specialist',
+        answer: `Operating hours and circulation facilities at the **Learning Resource Centre (LRC)**:
+
+- **24/7 Facility Access**: The Central Library reading halls and Law Library study areas are accessible **24/7** via smart ID card turnstiles.
+- **Circulation Desk Transactions**: Staffed book issuing, returns, and on-desk inquiries operate daily from **9:00 AM to 9:00 PM**.
+- **24/7 Smart Book Return Drop Box**: Outside circulation hours, you can return borrowed books anytime 24/7 using the automated **RFID Book Drop Box** at the LRC entrance.
+- **Web OPAC & Mobile App**: Search library collections, check due dates, and place reservation holds on [libraryopac.bennett.edu.in](https://libraryopac.bennett.edu.in) or via the official **"Bennett University LRC" mobile app** (Android & iOS).
+- **Official Helpdesk**: Contact \`libraryhelpdesk@bennett.edu.in\` for specialized research or account assistance.`,
+        citation: {
+          id: doc.id,
+          title: doc.title,
+          section: doc.section,
+          citation: doc.citation,
+          excerpt: doc.excerpt
+        },
+        actions: [
+          { label: 'Open Web OPAC Portal', icon: 'external-link' },
+          { label: 'Email Library Helpdesk', icon: 'mail' }
+        ]
+      };
+    }
+
+    // 4. Discussion Rooms & Quiet Study
     const doc = domain.documents[2];
     return {
       domainId: 'library',
