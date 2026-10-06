@@ -15,7 +15,7 @@ console.log('');
 const testCases = [
   {
     name: '1. Single Domain (IT Support & BU-WiFi)',
-    query: 'How do I connect to campus BU-WiFi and eduroam on my phone?',
+    query: 'How do I connect to campus BU-WiFi on my phone?',
     expectedType: 'DIRECT',
     expectedDomain: 'it'
   },

@@ -32,7 +32,7 @@ const INITIAL_DEMO_STATE = {
     {
       id: 'AUD-901',
       timestamp: '2 mins ago',
-      query: 'How do I connect to campus BU-WiFi and eduroam on my phone?',
+      query: 'How do I connect to campus BU-WiFi on my phone?',
       type: 'DIRECT',
       targetDomain: 'it',
       confidence: 0.98,

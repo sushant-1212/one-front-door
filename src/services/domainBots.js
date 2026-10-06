@@ -30,15 +30,15 @@ const DOMAIN_RESPONSES = {
     const q = query.toLowerCase();
     const domain = DOMAINS.it;
 
-    // 1. BU-WiFi / eduroam configuration
-    if (q.includes('wifi') || q.includes('wi-fi') || q.includes('bu-wifi') || q.includes('eduroam') || q.includes('internet') || q.includes('phone') || q.includes('android') || q.includes('iphone') || q.includes('mac')) {
+    // 1. BU-WiFi configuration
+    if (q.includes('wifi') || q.includes('wi-fi') || q.includes('bu-wifi') || q.includes('internet') || q.includes('phone') || q.includes('android') || q.includes('iphone') || q.includes('mac')) {
       const doc = domain.documents[0];
       return {
         domainId: 'it',
         title: 'IT & Digital Infrastructure Specialist',
-        answer: `To connect your device to **BU-WiFi** or **eduroam** across academic blocks, D1-D6 hostels, and campus premises:
+        answer: `To connect your device to **BU-WiFi** across academic blocks, D1-D6 hostels, and campus premises:
 
-1. **Network Selection**: Open your device Wi-Fi settings and select SSID **"BU-WiFi"** (or **"eduroam"** for roaming).
+1. **Network Selection**: Open your device Wi-Fi settings and select SSID **"BU-WiFi"**.
 2. **Identity Credentials**:
    - **Username / Identity**: Enter your full university email (\`username@bennett.edu.in\`).
    - **Password**: Enter your primary CollPoll ERP password.

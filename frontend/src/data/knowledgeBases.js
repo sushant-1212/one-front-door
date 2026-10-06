@@ -14,9 +14,9 @@ export const DOMAINS = {
     bgLight: 'rgba(0, 120, 212, 0.12)',
     border: 'rgba(0, 120, 212, 0.3)',
     icon: 'laptop',
-    description: 'Handles campus Wi-Fi (BU-WiFi / eduroam), CollPoll ERP login, Microsoft 365, MATLAB licenses, computer lab workstations, and @bennett.edu.in accounts.',
+    description: 'Handles campus Wi-Fi (BU-WiFi), CollPoll ERP login, Microsoft 365, MATLAB licenses, computer lab workstations, and @bennett.edu.in accounts.',
     keywords: [
-      'wifi', 'wi-fi', 'bu-wifi', 'eduroam', 'internet', 'network', 'vpn', 'sso', 'password', 'login', 'credentials',
+      'wifi', 'wi-fi', 'bu-wifi', 'internet', 'network', 'vpn', 'sso', 'password', 'login', 'credentials',
       'collpoll login', 'icampus', 'software', 'license', 'matlab', 'office 365', 'microsoft 365', 'outlook', 'email',
       'teams', 'printer', 'printing', 'laptop', 'desktop', 'lab computer', 'mac', 'windows', 'portal',
       'it ticket', 'helpdesk', 'server', 'ip address', 'dns', 'fiber'
@@ -26,9 +26,9 @@ export const DOMAINS = {
         id: 'DOC-IT-01',
         title: 'Campus Wi-Fi Network & Onboarding Configuration Standard',
         version: 'v4.4 (Academic Year 2024-2025)',
-        section: 'Sec. 2.1 - BU-WiFi & Eduroam Access Settings',
+        section: 'Sec. 2.1 - BU-WiFi Network Access Settings',
         citation: 'BU IT Infrastructure & Network Directive §2.1',
-        excerpt: 'Students and faculty connect to SSID "BU-WiFi" or "eduroam" across academic blocks, D1-D6 hostels, library, and cafeteria using full university email (username@bennett.edu.in) and primary ERP password. For Android and iOS mobile devices, select EAP Method PEAP, Phase-2 Authentication MSCHAPv2, and set CA certificate to InCommon RSA Server CA or Use System Certificates. Over 10,000 high-speed access points maintain campus-wide gigabit coverage. For manual MAC address whitelisting, visit IT Helpdesk in Academic Block Ground Floor Room 004.'
+        excerpt: 'Students and faculty connect to SSID "BU-WiFi" across academic blocks, D1-D6 hostels, library, and cafeteria using full university email (username@bennett.edu.in) and primary ERP password. For Android and iOS mobile devices, select EAP Method PEAP, Phase-2 Authentication MSCHAPv2, and set CA certificate to InCommon RSA Server CA or Use System Certificates. Over 10,000 high-speed access points maintain campus-wide gigabit coverage. For manual MAC address whitelisting, visit IT Helpdesk in Academic Block Ground Floor Room 004.'
       },
       {
         id: 'DOC-IT-02',
@@ -309,7 +309,7 @@ export const DEMO_PRESETS = [
     id: 'single-it',
     label: 'Single Domain (IT & WiFi)',
     tag: 'Direct Routing 96%',
-    query: 'How do I connect to campus BU-WiFi and eduroam on my phone?',
+    query: 'How do I connect to campus BU-WiFi on my phone?',
     expectedType: 'DIRECT',
     description: 'Demonstrates clean single-domain classification to IT Services with official WPA2-Enterprise onboarding guidelines.'
   },

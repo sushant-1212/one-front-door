@@ -91,7 +91,7 @@ function scoreDomain(text, domain) {
   // 2. High-value bigrams and phrases specific to Bennett University
   const highValuePhrases = {
     it: [
-      'bu-wifi', 'eduroam wifi', 'connect to wifi', 'collpoll login', 'icampus login', 'password reset',
+      'bu-wifi', 'campus wifi', 'connect to wifi', 'collpoll login', 'icampus login', 'password reset',
       'office 365', 'microsoft 365', 'matlab license', 'it helpdesk', 'room 004', 'fiber network'
     ],
     finance: [
