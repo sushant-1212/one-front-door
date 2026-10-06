@@ -19,7 +19,7 @@ export const DOMAINS = {
       'wifi', 'wi-fi', 'bu-wifi', 'internet', 'network', 'vpn', 'sso', 'password', 'login', 'credentials',
       'collpoll login', 'icampus', 'software', 'license', 'matlab', 'office 365', 'microsoft 365', 'outlook', 'email',
       'teams', 'printer', 'printing', 'laptop', 'desktop', 'lab computer', 'mac', 'windows', 'portal',
-      'it ticket', 'helpdesk', 'server', 'ip address', 'dns', 'fiber'
+      'it ticket', 'helpdesk', 'server', 'ip address', 'dns', 'fiber', 'id card', 'student id', 'lost id', 'rfid card', 'smart card'
     ],
     documents: [
       {

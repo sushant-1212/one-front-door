@@ -88,7 +88,38 @@ const DOMAIN_RESPONSES = {
       };
     }
 
-    // 3. Microsoft 365 & Software distribution
+    // 3. Lost / Damaged Student ID Card & RFID Replacement
+    if (q.includes('id card') || q.includes('lost id') || q.includes('identity card') || q.includes('rfid card') || q.includes('student card') || q.includes('smart card') || q.includes('badge')) {
+      const doc = domain.documents[1];
+      return {
+        domainId: 'it',
+        title: 'IT & Digital Infrastructure Specialist',
+        answer: `Protocol for **Lost or Damaged Student RFID ID Cards**:
+
+1. **Where to Go**:
+   - Visit the **IT Helpdesk & Student Identity Centre at Academic Block Ground Floor (Room 004)**.
+   - Operating Hours: Monday to Friday (9:00 AM – 5:30 PM). Contact: \`it.support@bennett.edu.in\` or Ext. 104.
+2. **Immediate Deactivation**:
+   - The lost smart card is immediately deactivated to prevent unauthorized hostel entry, library checkout, or campus turnstile access in your name.
+3. **Replacement Fee & Issuance**:
+   - A standard re-issuance fee of **₹500** is assessed for replacement RFID cards, payable via the **CollPoll Online Finance portal** or direct accounts challan.
+   - Present your payment receipt and ERP roll number at Room 004.
+   - Your newly encoded RFID card is printed on the spot or issued within **24 hours**, automatically re-synced with biometric security and LRC turnstiles.`,
+        citation: {
+          id: doc.id,
+          title: doc.title,
+          section: doc.section,
+          citation: doc.citation,
+          excerpt: doc.excerpt
+        },
+        actions: [
+          { label: 'Pay ID Card Replacement Fee on CollPoll', icon: 'credit-card' },
+          { label: 'Locate IT Helpdesk (Room 004)', icon: 'map-pin' }
+        ]
+      };
+    }
+
+    // 4. Microsoft 365 & Software distribution
     if (q.includes('software') || q.includes('office') || q.includes('matlab') || q.includes('teams') || q.includes('onedrive') || q.includes('word') || q.includes('license')) {
       const doc = domain.documents[2];
       return {

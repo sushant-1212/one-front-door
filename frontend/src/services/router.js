@@ -135,11 +135,22 @@ function scoreDomain(text, domain) {
     }
   }
 
+  // Student ID card / RFID / Lost ID -> IT Services
+  if (clean.includes('id card') || clean.includes('student id') || clean.includes('identity card') || clean.includes('rfid card') || clean.includes('lost id')) {
+    if (domain.id === 'it') {
+      score += 7.5;
+      matchedKeywords.push('[primary: student id card]');
+    } else if (domain.id === 'library' || domain.id === 'academics') {
+      score = Math.max(0, score - 3.5);
+    }
+  }
+
   // 2. High-value bigrams and phrases specific to Bennett University
   const highValuePhrases = {
     it: [
       'bu-wifi', 'campus wifi', 'connect to wifi', 'collpoll login', 'icampus login', 'password reset',
-      'office 365', 'microsoft 365', 'matlab license', 'it helpdesk', 'room 004', 'fiber network'
+      'office 365', 'microsoft 365', 'matlab license', 'it helpdesk', 'room 004', 'fiber network',
+      'lost id card', 'replace id card', 'new id card', 'student id card', 'rfid badge', 'id card'
     ],
     finance: [
       'tuition fee', 'pay tuition', 'collpoll payment', 'late fee', 'merit scholarship', 'single girl child',
@@ -313,6 +324,9 @@ export function routeQuery(query) {
   if (!isDecisiveMatch) {
     const lower = trimmed.toLowerCase();
     for (const [trigger, ambiguousConfig] of Object.entries(KNOWN_AMBIGUOUS_MAP)) {
+      if (trigger === 'card' && (lower.includes('id card') || lower.includes('student id') || lower.includes('rfid card') || lower.includes('admit card') || lower.includes('hall ticket') || lower.includes('library card'))) {
+        continue;
+      }
       if (new RegExp(`\\b${trigger}\\b`, 'i').test(lower)) {
         return {
           type: 'CLARIFY',
