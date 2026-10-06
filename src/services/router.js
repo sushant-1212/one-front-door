@@ -88,13 +88,50 @@ function scoreDomain(text, domain) {
     }
   }
 
-  // 1b. Domain-specific prioritization: Scholarships are exclusively managed by Finance & Accounts
+  // 1b. Domain-specific prioritization:
+  // Scholarships -> Finance
   if (clean.includes('scholarship')) {
     if (domain.id === 'finance') {
       score += 6.5;
       matchedKeywords.push('[primary: scholarship]');
     } else if (domain.id === 'academics') {
       score = Math.max(0, score - 3.5);
+    }
+  }
+
+  // IEEE / Research papers -> Library (even when asked from hostel room or on campus Wi-Fi)
+  if (clean.includes('ieee') || clean.includes('research paper') || clean.includes('springer') || clean.includes('sciencedirect')) {
+    if (domain.id === 'library') {
+      score += 7.0;
+      matchedKeywords.push('[primary: library research]');
+    } else if (domain.id === 'hostel' || domain.id === 'it') {
+      score = Math.max(0, score - 3.0);
+    }
+  }
+
+  // Medical leave / condonation for attendance -> Academics
+  if (clean.includes('attendance') && (clean.includes('medical') || clean.includes('leave') || clean.includes('condonation'))) {
+    if (domain.id === 'academics') {
+      score += 6.0;
+      matchedKeywords.push('[primary: medical attendance condonation]');
+    }
+  }
+
+  // Hostel attendance / night attendance -> Hostel
+  if (clean.includes('hostel') && (clean.includes('attendance') || clean.includes('roll call'))) {
+    if (domain.id === 'hostel') {
+      score += 6.0;
+      matchedKeywords.push('[primary: hostel curfew check]');
+    } else if (domain.id === 'academics') {
+      score = Math.max(0, score - 4.0);
+    }
+  }
+
+  // AC cooling / repair / maintenance -> Hostel
+  if (clean.includes('ac') && (clean.includes('cool') || clean.includes('repair') || clean.includes('not working') || clean.includes('service'))) {
+    if (domain.id === 'hostel') {
+      score += 6.0;
+      matchedKeywords.push('[primary: hostel maintenance]');
     }
   }
 
@@ -107,15 +144,18 @@ function scoreDomain(text, domain) {
     finance: [
       'tuition fee', 'pay tuition', 'collpoll payment', 'late fee', 'merit scholarship', 'single girl child',
       'ugc refund', 'program withdrawal', 'security deposit', 'fee challan', 'finance office',
-      'scholarship withdrawn', 'restore scholarship', 'scholarship restored', 'scholarship retention', 'retain scholarship'
+      'scholarship withdrawn', 'restore scholarship', 'scholarship restored', 'scholarship retention', 'retain scholarship',
+      'pay in installments', 'fee installment', 'fee installments', 'installment plan', 'education loan'
     ],
     hostel: [
       'd5 hostel', 'd-block hostel', 'hostel room', 'gate pass', 'collpoll gate pass', 'outpass', '10 pm curfew',
-      'hostel warden', 'rangeela lounge', 'mess food', 'mess timings', 'dorm ac', 'heater leaking', 'maintenance repair'
+      'hostel warden', 'rangeela lounge', 'mess food', 'mess timings', 'dorm ac', 'heater leaking', 'maintenance repair',
+      'ac cooling', 'ac not cooling', 'hostel attendance', 'room cooler', 'water leak', 'room change'
     ],
     academics: [
       '75% attendance', '75 percent', 'biometric attendance', 'debarment', 'debarred', 'add drop', 'drop course',
-      'official transcript', 'grade appeal', 're-evaluation', 'cgpa requirement', 'admit card', 'hall ticket', 'end sem exam'
+      'official transcript', 'grade appeal', 're-evaluation', 'cgpa requirement', 'admit card', 'hall ticket', 'end sem exam',
+      'summer semester', 'summer term', 'branch change', 'change branch', 'backlog course', 'remedial exam', 'medical condonation'
     ],
     cdc: [
       'campus placement', 'cdc placement', 'dream offer', 'super dream', 'placement drive', 'summer internship',
@@ -123,7 +163,8 @@ function scoreDomain(text, domain) {
     ],
     library: [
       'lrc library', 'koha library', 'borrow book', 'issue book', 'm-opac', 'book renewal', 'library fine',
-      'ieee xplore', 'sciencedirect', 'springerlink', 'turnitin plagiarism', 'discussion room'
+      'ieee xplore', 'sciencedirect', 'springerlink', 'turnitin plagiarism', 'discussion room',
+      'access ieee', 'ieee paper', 'ieee papers', 'lost book', 'lost library book', 'book drop'
     ]
   };
 
@@ -267,22 +308,25 @@ export function routeQuery(query) {
   const top2 = scoring.ranked[1];
   const latency = Math.round(performance.now() - startTime);
 
-  // 3. Check for specific known ambiguous trigger keywords
-  const lower = trimmed.toLowerCase();
-  for (const [trigger, ambiguousConfig] of Object.entries(KNOWN_AMBIGUOUS_MAP)) {
-    if (new RegExp(`\\b${trigger}\\b`, 'i').test(lower)) {
-      return {
-        type: 'CLARIFY',
-        action: 'PROMPT_CLARIFICATION',
-        originalQuery: trimmed,
-        confidence: top1.confidence,
-        suggestedDomain: top1.domainId,
-        clarification: ambiguousConfig,
-        scoringBreakdown: scoring.breakdown,
-        ranked: scoring.ranked,
-        reason: `Query contains ambiguous keyword "${trigger}". Clarifying across campus departments to avoid misrouting.`,
-        latencyMs: latency
-      };
+  // 3. Check for specific known ambiguous trigger keywords (only if query lacks decisive domain margin)
+  const isDecisiveMatch = top1.confidence >= 0.75 && top1.rawScore >= 3.5 && (top1.confidence - top2.confidence >= 0.22);
+  if (!isDecisiveMatch) {
+    const lower = trimmed.toLowerCase();
+    for (const [trigger, ambiguousConfig] of Object.entries(KNOWN_AMBIGUOUS_MAP)) {
+      if (new RegExp(`\\b${trigger}\\b`, 'i').test(lower)) {
+        return {
+          type: 'CLARIFY',
+          action: 'PROMPT_CLARIFICATION',
+          originalQuery: trimmed,
+          confidence: top1.confidence,
+          suggestedDomain: top1.domainId,
+          clarification: ambiguousConfig,
+          scoringBreakdown: scoring.breakdown,
+          ranked: scoring.ranked,
+          reason: `Query contains ambiguous keyword "${trigger}". Clarifying across campus departments to avoid misrouting.`,
+          latencyMs: latency
+        };
+      }
     }
   }
 

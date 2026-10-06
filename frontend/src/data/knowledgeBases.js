@@ -62,7 +62,8 @@ export const DOMAINS = {
     keywords: [
       'tuition', 'fee', 'fees', 'hostel fee', 'mess fee', 'bursar', 'finance', 'payment', 'collpoll payment',
       'due date', 'deadline', 'late fee', 'scholarship', 'merit scholarship', 'single girl child', 'defense scholarship',
-      'concession', 'invoice', 'receipt', 'challan', 'refund', 'ugc refund', 'direct deposit', 'neft', 'rtgs', 'account hold', 'billing'
+      'concession', 'invoice', 'receipt', 'challan', 'refund', 'ugc refund', 'direct deposit', 'neft', 'rtgs', 'account hold', 'billing',
+      'installment', 'installments', 'emi'
     ],
     documents: [
       {
@@ -167,7 +168,8 @@ export const DOMAINS = {
       'attendance', '75%', '75 percent', 'biometric attendance', 'debar', 'debarment', 'condonation',
       'course', 'class', 'register', 'registration', 'add drop', 'drop', 'withdraw', 'credit',
       'exam', 'examination', 'midterm', 'end sem', 'admit card', 'hall ticket', 'date sheet', 'timetable',
-      'grade', 'gpa', 'cgpa', 'sgpa', 'grade appeal', 're-evaluation', 'transcript', 'degree', 'dean academics', 'registrar'
+      'grade', 'gpa', 'cgpa', 'sgpa', 'grade appeal', 're-evaluation', 'transcript', 'degree', 'dean academics', 'registrar',
+      'branch', 'branch change', 'change branch', 'summer semester', 'summer term', 'backlog exam'
     ],
     documents: [
       {
