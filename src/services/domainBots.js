@@ -139,59 +139,33 @@ All campus digital infrastructure (Gigabit fiber, CollPoll ERP, biometric turnst
     const q = query.toLowerCase();
     const domain = DOMAINS.finance;
 
-    // 1. Fee Payment deadlines & Late fees
-    if (q.includes('deadline') || q.includes('due') || q.includes('late fee') || q.includes('when') || q.includes('date') || q.includes('fine') || q.includes('tuition')) {
-      const doc = domain.documents[0];
-      return {
-        domainId: 'finance',
-        title: 'Fees, Accounts & Scholarships Specialist',
-        answer: `Here are the official fee payment guidelines from the Bennett University Finance Office:
+    // 1. Scholarships (Merit, Single Girl Child, Defense & Irreversibility)
+    if (q.includes('scholarship') || q.includes('merit') || q.includes('girl child') || q.includes('defense') || q.includes('concession') || q.includes('waiver') || q.includes('irreversib') || q.includes('restor')) {
+      if (q.includes('irreversib') || q.includes('restor') || q.includes('regain') || q.includes('ufm') || q.includes('withdraw') || q.includes('lose') || q.includes('lost') || q.includes('discontinue') || q.includes('cancel') || q.includes('next year')) {
+        const doc = domain.documents[3] || domain.documents[1];
+        return {
+          domainId: 'finance',
+          title: 'Fees, Accounts & Scholarships Specialist',
+          answer: `Official Bennett University **Scholarship Retention & Irreversibility Regulations**:
 
-- **Payment Mode**: Semester tuition and hostel fees must be remitted exclusively via the **CollPoll Online Payment Gateway** (UPI, Net Banking, Debit/Credit Card, or RTGS/NEFT challan).
-- **Payment Schedule**: Fee notifications are released on CollPoll at the start of each semester; payments must be finalized prior to the published term deadline.
-- **Late Fee Penalty**: A late fine of **₹100 per day** is assessed for the first 10 calendar days past the deadline.
-- **Administrative Hold**: Accounts with unpaid dues after the grace window incur an administrative hold preventing course registration and exam hall ticket generation.`,
-        citation: {
-          id: doc.id,
-          title: doc.title,
-          section: doc.section,
-          citation: doc.citation,
-          excerpt: doc.excerpt
-        },
-        actions: [
-          { label: 'Pay Semester Fee on CollPoll', icon: 'credit-card' },
-          { label: 'Download Fee Receipt / Challan', icon: 'file-text' }
-        ]
-      };
-    }
+- **Can It Be Restored?**: **NO.** Under the official university **Irreversibility Clause**, if an admission or merit scholarship is withdrawn due to CGPA deficiency (<8.0 CGPA), backlogs, or disciplinary actions, **it CANNOT be restored in subsequent academic years**.
+- **Payment Impact**: The student is required to pay the full, un-subsidized tuition fees starting from the semester of withdrawal.
+- **Grade Improvement Exam Rule**: According to the University Grade Improvement Policy, improvements in CGPA achieved through grade improvement examinations are **not admissible** for scholarship retention or restoration.
+- **Annual Review**: Retention is evaluated only once a year, following the declaration of even-semester end-term examination results.`,
+          citation: {
+            id: doc.id,
+            title: doc.title,
+            section: doc.section,
+            citation: doc.citation,
+            excerpt: doc.excerpt
+          },
+          actions: [
+            { label: 'View Scholarship Regulations Code §3.2', icon: 'file-text' },
+            { label: 'Contact Accounts Desk', icon: 'mail' }
+          ]
+        };
+      }
 
-    // 2. Scholarships (Merit, Single Girl Child, Defense)
-    if (q.includes('irreversib') || q.includes('restor') || q.includes('regain') || q.includes('ufm') || (q.includes('scholarship') && (q.includes('lose') || q.includes('lost') || q.includes('discontinue') || q.includes('withdrawn')))) {
-      const doc = domain.documents[3] || domain.documents[1];
-      return {
-        domainId: 'finance',
-        title: 'Fees, Accounts & Scholarships Specialist',
-        answer: `Official Bennett University **Scholarship Retention & Irreversibility Regulations**:
-
-- **Annual Retention Evaluation**: Admission and merit scholarships are reviewed annually after the declaration of even-semester end-term results.
-- **Eligibility Standards**: Students must maintain a minimum **8.0 CGPA**, have **zero backlogs**, and have **zero disciplinary or Unfair Means (UFM) cases**.
-- **Strict Irreversibility Clause**: If a scholarship is withdrawn due to CGPA shortfall, backlogs, or disciplinary issues, **it CANNOT be restored in subsequent years**. Students must pay full tuition fees from that semester onwards.
-- **Grade Improvement Restriction**: CGPA gains achieved through grade improvement examinations cannot be used for scholarship retention or restoration.`,
-        citation: {
-          id: doc.id,
-          title: doc.title,
-          section: doc.section,
-          citation: doc.citation,
-          excerpt: doc.excerpt
-        },
-        actions: [
-          { label: 'View Scholarship Policy Document', icon: 'file-text' },
-          { label: 'Contact Accounts Desk', icon: 'mail' }
-        ]
-      };
-    }
-
-    if (q.includes('scholarship') || q.includes('merit') || q.includes('girl child') || q.includes('defense') || q.includes('concession') || q.includes('waiver')) {
       const doc = domain.documents[1];
       return {
         domainId: 'finance',
@@ -212,6 +186,32 @@ All campus digital infrastructure (Gigabit fiber, CollPoll ERP, biometric turnst
         actions: [
           { label: 'Check Scholarship Renewal Status', icon: 'award' },
           { label: 'Submit Scholarship Documents', icon: 'upload' }
+        ]
+      };
+    }
+
+    // 2. Fee Payment deadlines & Late fees
+    if (q.includes('deadline') || q.includes('due date') || q.includes('dues') || q.includes('fee due') || q.includes('late fee') || q.includes('when') || q.includes('fine') || q.includes('tuition')) {
+      const doc = domain.documents[0];
+      return {
+        domainId: 'finance',
+        title: 'Fees, Accounts & Scholarships Specialist',
+        answer: `Here are the official fee payment guidelines from the Bennett University Finance Office:
+
+- **Payment Mode**: Semester tuition and hostel fees must be remitted exclusively via the **CollPoll Online Payment Gateway** (UPI, Net Banking, Debit/Credit Card, or RTGS/NEFT challan).
+- **Payment Schedule**: Fee notifications are released on CollPoll at the start of each semester; payments must be finalized prior to the published term deadline.
+- **Late Fee Penalty**: A late fine of **₹100 per day** is assessed for the first 10 calendar days past the deadline.
+- **Administrative Hold**: Accounts with unpaid dues after the grace window incur an administrative hold preventing course registration and exam hall ticket generation.`,
+        citation: {
+          id: doc.id,
+          title: doc.title,
+          section: doc.section,
+          citation: doc.citation,
+          excerpt: doc.excerpt
+        },
+        actions: [
+          { label: 'Pay Semester Fee on CollPoll', icon: 'credit-card' },
+          { label: 'Download Fee Receipt / Challan', icon: 'file-text' }
         ]
       };
     }

@@ -88,6 +88,16 @@ function scoreDomain(text, domain) {
     }
   }
 
+  // 1b. Domain-specific prioritization: Scholarships are exclusively managed by Finance & Accounts
+  if (clean.includes('scholarship')) {
+    if (domain.id === 'finance') {
+      score += 6.5;
+      matchedKeywords.push('[primary: scholarship]');
+    } else if (domain.id === 'academics') {
+      score = Math.max(0, score - 3.5);
+    }
+  }
+
   // 2. High-value bigrams and phrases specific to Bennett University
   const highValuePhrases = {
     it: [
@@ -96,7 +106,8 @@ function scoreDomain(text, domain) {
     ],
     finance: [
       'tuition fee', 'pay tuition', 'collpoll payment', 'late fee', 'merit scholarship', 'single girl child',
-      'ugc refund', 'program withdrawal', 'security deposit', 'fee challan', 'finance office'
+      'ugc refund', 'program withdrawal', 'security deposit', 'fee challan', 'finance office',
+      'scholarship withdrawn', 'restore scholarship', 'scholarship restored', 'scholarship retention', 'retain scholarship'
     ],
     hostel: [
       'd5 hostel', 'd-block hostel', 'hostel room', 'gate pass', 'collpoll gate pass', 'outpass', '10 pm curfew',
