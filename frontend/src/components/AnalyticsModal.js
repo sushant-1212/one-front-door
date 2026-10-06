@@ -97,7 +97,7 @@ export function createAnalyticsModal() {
 
             <div class="chart-card">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                <h4>Hackathon Live Demo Simulation</h4>
+                <h4>Live Telemetry Simulation</h4>
                 <button class="btn btn-primary" id="btnRunSimulation" style="padding: 6px 12px; font-size: 0.76rem;">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                   <span>Simulate 25 Live Student Queries</span>

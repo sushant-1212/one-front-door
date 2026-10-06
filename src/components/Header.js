@@ -62,9 +62,9 @@ export function renderHeader(container, { onToggleInspector, onOpenAnalytics, on
           <span>Enterprise Analytics</span>
         </button>
 
-        <button id="btnToggleInspector" class="btn btn-inspector active" title="Judge Mode: Live Routing & Confidence Pipeline">
+        <button id="btnToggleInspector" class="btn btn-inspector active" title="Live Routing & Confidence Pipeline">
           <span class="live-pulse-dot"></span>
-          <span>Judge Mode (Inspector)</span>
+          <span>Live Inspector</span>
         </button>
       </div>
     </header>

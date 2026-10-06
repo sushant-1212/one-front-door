@@ -29,38 +29,37 @@ export function createChatInterface({ onRouteUpdate, onShowCitation, onShowHando
     `).join('');
 
     container.innerHTML = `
-      <!-- Presets Banner for Hackathon Judges -->
-      <div class="presets-bar">
-        <span class="presets-label">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-          Judge Presets:
-        </span>
-        ${presetsHtml}
-      </div>
-
-      <!-- Active Connected Chatbot Status Banner -->
-      <div class="active-bot-banner" id="activeBotBanner">
-        <div class="active-bot-info">
-          <span style="color:var(--text-muted); font-size:0.75rem;">Current Chatbot:</span>
-          <span class="active-bot-pill" id="activeBotPill">
-            <span class="dot" style="width:7px; height:7px; border-radius:50%; background:#38BDF8;"></span>
-            <span id="activeBotLabel">🚪 Campus Master Front Door</span>
+          <!-- Preset Scenarios -->
+          <span class="presets-label">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Quick Scenarios:
           </span>
+          ${presetsHtml}
         </div>
-        <button class="btn-switch-frontdoor" id="btnResetToFrontDoor" style="display:none;" title="Return to Master Front Door Gateway">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>
-          <span>Return to Master Door</span>
-        </button>
-      </div>
 
-      <!-- Messages Scroll Area -->
-      <div class="messages-scroll" id="messagesScroll">
-        <!-- Initial Welcome Hero -->
-        <div class="welcome-hero" id="welcomeHero">
-          <div class="welcome-badge">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-            <span>MICROSOFT HACKATHON EVALUATION PROTOTYPE</span>
+        <!-- Active Connected Chatbot Status Banner -->
+        <div class="active-bot-banner" id="activeBotBanner">
+          <div class="active-bot-info">
+            <span style="color:var(--text-muted); font-size:0.75rem;">Current Chatbot:</span>
+            <span class="active-bot-pill" id="activeBotPill">
+              <span class="dot" style="width:7px; height:7px; border-radius:50%; background:#38BDF8;"></span>
+              <span id="activeBotLabel">🚪 Campus Master Front Door</span>
+            </span>
           </div>
+          <button class="btn-switch-frontdoor" id="btnResetToFrontDoor" style="display:none;" title="Return to Master Front Door Gateway">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>
+            <span>Return to Master Door</span>
+          </button>
+        </div>
+
+        <!-- Messages Scroll Area -->
+        <div class="messages-scroll" id="messagesScroll">
+          <!-- Initial Welcome Hero -->
+          <div class="welcome-hero" id="welcomeHero">
+            <div class="welcome-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span>ALL-IN-ONE CAMPUS AI GATEWAY</span>
+            </div>
           <h2>One Front Door for Everything</h2>
           <p>
             No more bouncing between 10 different campus bots. One intelligent orchestrator understands your intent, splits complex multi-topic questions, and routes to grounded specialists with source citations.
