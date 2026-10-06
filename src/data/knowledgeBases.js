@@ -140,7 +140,7 @@ export const DOMAINS = {
   academics: {
     id: 'academics',
     name: 'Academics & Examination',
-    shortName: 'Academic Registrar',
+    shortName: 'Academics & Exams',
     role: '75% Attendance, Exams, Admit Cards, Transcripts & Grading Specialist',
     color: '#8764B8', // Purple
     bgLight: 'rgba(135, 100, 184, 0.12)',
@@ -227,7 +227,7 @@ export const DOMAINS = {
   library: {
     id: 'library',
     name: 'Learning Resource Centre (LRC)',
-    shortName: 'LRC Central Library',
+    shortName: 'LRC Library',
     role: 'KOHA System, RFID Cards, Book Borrowing & E-Journals Specialist',
     color: '#008272', // Teal / Green-Blue
     bgLight: 'rgba(0, 130, 114, 0.12)',

@@ -162,7 +162,7 @@ export function createInspector() {
       step4.textContent = `Decision: ${routeResult.action} (${Math.round(routeResult.confidence * 100)}%)`;
     }
 
-    step3.textContent = `Scored against 5 domain models`;
+    step3.textContent = `Scored against 6 campus domain models`;
     step5.textContent = routeResult.type === 'HANDOFF' ? 'Bypassed (Ticket dispatched)' : 'Grounded against official university policies';
 
     // Highlight all pipeline steps as completed
