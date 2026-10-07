@@ -329,7 +329,7 @@ export const DEMO_PRESETS = [
     tag: 'Clarify Fallback',
     query: 'I need to renew my student pass',
     expectedType: 'CLARIFY',
-    description: 'Scores between 40-65% confidence; triggers interactive clarification chips across Hostel Gate Pass, Library Pass, and Gym Pass.'
+    description: 'Scores in moderate confidence window (38–59%); triggers interactive clarification chips across Hostel Gate Pass, Library Pass, and Gym Pass.'
   },
   {
     id: 'out-of-scope-handoff',
@@ -337,7 +337,7 @@ export const DEMO_PRESETS = [
     tag: 'Ticket Fallback',
     query: 'Can I land a private helicopter on the campus sports ground for my presentation?',
     expectedType: 'HANDOFF',
-    description: 'Confidence < 40%; triggers graceful human handoff ticket creation to Dean of Students & Proctorial Board.'
+    description: 'Confidence < 38%; triggers graceful human handoff ticket creation to Dean of Students & Proctorial Board.'
   },
   {
     id: 'cross-academics-cdc',

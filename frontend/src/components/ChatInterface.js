@@ -98,7 +98,7 @@ export function createChatInterface({ onRouteUpdate, onShowCitation, onShowHando
         </form>
 
         <div class="input-subtext">
-          <span>Enterprise Fallback Active: Direct (>=70%), Clarify (40-69%), Human Handoff (<40%)</span>
+          <span>Enterprise Fallback Active: Direct (≥60%), Clarify (38–59%), Human Handoff (<38%)</span>
           <span>100% Policy Grounded</span>
         </div>
       </div>

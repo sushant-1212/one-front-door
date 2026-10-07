@@ -83,7 +83,7 @@ export function createInspector() {
         <div class="pipeline-card">
           <div class="pipeline-card-title">
             <span>Domain Confidence Matrix</span>
-            <span style="font-size:0.7rem; color:var(--text-muted)">Threshold: 70%</span>
+            <span style="font-size:0.7rem; color:var(--text-muted)">Threshold: 60%</span>
           </div>
 
           <div class="confidence-bars-list" id="confidenceBars">
